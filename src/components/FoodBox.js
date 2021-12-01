@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 
 function FoodBox(props) {
-  const { food } = props;
+  const { food, btnClick } = props;
+  const [qty, setQty] = useState(0);
+
+  function handleQty(event) {
+    setQty(event.target.value);
+  }
   return (
     <div>
       <div className="box">
@@ -25,7 +30,20 @@ function FoodBox(props) {
                 <input className="input" type="number" value="1" />
               </div>
               <div className="control">
-                <button className="button is-info">+</button>
+                <input
+                  value={qty}
+                  type="number"
+                  onChange={handleQty}
+                  className="input"
+                />
+                <button
+                  onClick={() => {
+                    btnClick(food, qty);
+                  }}
+                  className="button is-info"
+                >
+                  +
+                </button>
               </div>
             </div>
           </div>
