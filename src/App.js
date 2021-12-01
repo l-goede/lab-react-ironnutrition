@@ -1,24 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import foodJson from './foods.json';
+import FoodBox from './components/FoodBox';
+import Form from './components/Form';
 
 function App() {
+  const [foods, setFood] = useState(foodJson);
+  const [showForm, setShowForm] = useState(false);
+
+  function handleToggle() {
+    setShowForm(!showForm);
+  }
+  function handleSubmit(event) {
+    event.preventDefault();
+    let newFood = {
+      name: event.target.name.value,
+      calories: event.target.calories.value,
+      image: event.target.image.value,
+    };
+    setFood([newFood, ...foods]);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {showForm ? (
+        <Form btnSubmit={handleSubmit} />
+      ) : (
+        <button onClick={handleToggle}>Add</button>
+      )}
+
+      {foods.map((elem, i) => {
+        return <FoodBox key={i} food={elem} />;
+      })}
     </div>
   );
 }
